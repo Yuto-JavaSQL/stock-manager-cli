@@ -21,3 +21,14 @@ Thumbs.db
 
 # MySQL dumps (if any)
 *.sql~
+
+# Eclipse設定
+.classpath
+.project
+.settings/
+bin/
+
+# 作業用ディレクトリ（例）
+.metadata/
+plan/
+
