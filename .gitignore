@@ -1,0 +1,23 @@
+# STS / Eclipse
+/.classpath
+/.project
+/.settings/
+/target/
+/bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+
+# IDE
+.idea/
+*.iml
+
+# MySQL dumps (if any)
+*.sql~
