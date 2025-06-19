@@ -2,11 +2,14 @@ package app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
 import dao.ProductDao;
+import dao.SalesDao;
 import model.Product;
+import model.Sales;
 
 public class Main {
 	
@@ -19,6 +22,7 @@ public class Main {
 			Scanner scanner = new Scanner(System.in)){
 			
 			ProductDao productDao = new ProductDao(conn);
+			SalesDao salesDao = new SalesDao(conn);
 		
 			while (true) {
 				System.out.println("\n==商品管理システム ==");
@@ -26,6 +30,8 @@ public class Main {
 				System.out.println("2. 商品登録");
 				System.out.println("3. 商品更新");
 				System.out.println("4. 商品削除");
+				System.out.println("5. 商品販売登録");
+				System.out.println("6. 販売履歴表示");
 				System.out.println("0. 終了");
 				System.out.println("選択肢を入力してください");
 			
@@ -71,6 +77,27 @@ public class Main {
 				case "4":
 					int deleteId = readInt(scanner, "削除する商品のID：");
 					productDao.delete(deleteId);
+					break;
+					
+				case "5":
+					int saleProductId = readInt(scanner, "販売する商品のID：");
+					int quantitySold = readInt(scanner, "販売数：");
+					
+					Sales sale = new Sales();
+					sale.setProductId(saleProductId);
+					sale.setQuantity(quantitySold);
+					sale.setSaleDate(LocalDateTime.now());
+					
+					salesDao.insert(sale);
+					System.out.println("販売情報を登録しました。");
+					break;
+					
+				case "6":
+					List<Sales> sales = salesDao.findAll();
+					for (Sales s : sales) {
+						System.out.printf("販売ID： %d / 商品ID： %d / 数量： %d / 日付： %s\n",
+								s.getSaleId(), s.getProductId(), s.getQuantity(), s.getSaleDate());
+					}
 					break;
 				
 				case "0":
