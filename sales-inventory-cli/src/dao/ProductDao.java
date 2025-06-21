@@ -85,5 +85,33 @@ public class ProductDao {
 			e.printStackTrace();
 		}
 	}
+	
+	//指定商品の在庫数を取得
+	public int getStockQuantity(int productId) throws SQLException {
+		String sql = "SELECT stock_quantity FROM products WHERE product_id = ?";
+		try(PreparedStatement stmt = conn.prepareStatement(sql)){
+			stmt.setInt(1, productId);
+			try(ResultSet rs = stmt.executeQuery()){
+				if (rs.next()) {
+					return rs.getInt("stock_uantity");
+				}else {
+					throw new SQLException("商品IDが見つかりません："+ productId);
+				}
+			}
+		}
+	}
+	
+	//指定商品の在庫数を更新
+	public void updateStockQuantity(int productId, int newQuantity) throws SQLException{
+		String sql = "UPDATE products SET stock_quantity = ? WHERE product_id = ?";
+		try (PreparedStatement stmt = conn.prepareStatement(sql)){
+			stmt.setInt(1, newQuantity);
+			stmt.setInt(2, productId);
+			int affectedRows = stmt.executeUpdate();
+			if (affectedRows == 0) {
+				throw new SQLException("在庫数の更新に失敗しました。商品ID："+ productId);
+			}
+		}
+	}
 
 }
